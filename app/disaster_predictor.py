@@ -8,12 +8,17 @@ import seaborn as sns             ## to visualize random distributions
 import plotly.express as px       ## data visualization & graphical plotting
 import plotly.graph_objects as go ## data visualization & graphical plotting
 import plotly.subplots as sp      ## data visualization & graphical plotting
-
+import requests
+import matplotlib.pyplot as plt
+import requests
+import matplotlib.pyplot as plt
+from IPython.display import display
+import folium
 
 sys.path.append('D:/google_hackathon/project/VoilaDisasterPredictor/model/earthquake')
 from tsunamiUtils import getTsunamiLinearRegressionResult
 tsunamiDf =pd.read_csv("D:\google_hackathon\earthquake_data.csv")
-class disasterPredictorApp(object):
+class DisasterPredictorApp(object):
     def __init__(self):
         self._runDate = None
         self._tsunamiPredictionWidget = widgets.Output()
@@ -239,34 +244,27 @@ class disasterPredictorApp(object):
         #runButton.on_click(self.dummy)
         self._tsunamiPredictionInputWidget = widgets.VBox(children=children)
 
-        df = pd.DataFrame(dict(
-            x = [1, 3, 2, 4],
-            y = [1, 2, 3, 4]
-        ))
-        # out = widgets.Output()
-        # with out:
-        #     fig = go.FigureWidget()
-        #     fig.add_scatter(y=[2, 1, 4, 3])
-        #     #px.line(df, x="x", y="y", title="Unsorted Input") 
-        #     fig.show()
+        m = folium.Map(location=[0, 200], zoom_start=2)
+        
+        # Add a marker for each data point
+        for _, row in tsunamiDf.iterrows():
+            folium.CircleMarker(
+                location=[row['latitude'], row['longitude']],
+                radius=6,
+                fill=True,
+                fill_color='red',
+                fill_opacity=0.7,
+                popup=f"Magnitude: {row['magnitude']}",
+            ).add_to(m)
 
-
-
-        # out = widgets.Output()
-        # with out:
-        # out = widgets.Output()
-        # with out:
+        
+        
         # fig = px.density_mapbox(tsunamiDf, lat='latitude', lon='longitude', z='magnitude', radius=6,
         #                     center=dict(lat=0, lon=200), zoom=0, mapbox_style="stamen-terrain")
         # fig.update_geos(fitbounds="locations")
-        # fig.update_layout(autosize=False, width=760, height=450, showlegend=False,
-        #                     title='Quakes by Country - Density Mapbox', title_x=0.5)
-        
-        fig = px.density_mapbox(tsunamiDf, lat='latitude', lon='longitude', z='magnitude', radius=6,
-                            center=dict(lat=0, lon=200), zoom=0, mapbox_style="stamen-terrain")
-        fig.update_geos(fitbounds="locations")
-        
-        out = go.FigureWidget(fig)
+        out = widgets.Output()
+        with out:
+            display(m)
         tsunamiDetails = widgets.HTML('<h3> Some details about Earthquakes and Tsunamis</h3>')
         #self._tsunamiInfoWidget = widgets.VBox(children=[tsunamiDetails, out])
         self._tsunamiInfoWidget = out
@@ -274,8 +272,63 @@ class disasterPredictorApp(object):
             children=[self._tsunamiPredictionInputWidget, self._tsunamiPredictionOutputWidget, self._tsunamiInfoWidget])
         self.refreshTab()
 
+    
+
+    def plot_weather_forecast(self, api_key, location='London, UK'):
+        # Make API call to retrieve weather data
+        url = 'http://api.openweathermap.org/data/2.5/forecast'
+        params = {
+            'q': location,
+            'appid': api_key,
+            'units': 'metric'
+        }
+        response = requests.get(url, params=params)
+        data = response.json()
+
+        # Extract relevant information
+        timestamps = []
+        temperatures = []
+        for forecast in data['list']:
+            timestamp = forecast['dt']
+            temperature = forecast['main']['temp']
+            timestamps.append(timestamp)
+            temperatures.append(temperature)
+
+        # Convert timestamps to human-readable format
+        dates = [datetime.datetime.fromtimestamp(timestamp) for timestamp in timestamps]
+
+        # Create a DataFrame from the data
+        df = pd.DataFrame({'Date': dates, 'Temperature': temperatures})
+
+        # Set seaborn style
+        sns.set_style('darkgrid')
+        out = widgets.Output()
+        with out:
+            # Plot the data using seaborn
+            plt.figure(figsize=(10, 6))
+            sns.lineplot(data=df, x='Date', y='Temperature')
+            plt.xlabel('Date')
+            plt.ylabel('Temperature (°C)')
+            plt.title('Temperature Forecast')
+
+            # Rotate x-axis labels for better readability
+            plt.xticks(rotation=45)
+
+            # Display the plot
+            plt.show()
+        return out
+
+
     def _weatherVisualizer(self):
         children = [widgets.HTML(value='<h2>Weather Visualizer</h2>')]
+        api_key = "c4fa56be9b07826adb1cd1b4b82e612b"
+        plots = self.plot_weather_forecast(api_key)
 
+        # # Displaying the plots using Voila
+        # for plot in plots:
+        #     display(widgets.Output(layout={'border': '1px solid black'}))
+        #     with plot.canvas:
+        #         display(plot)
+        children.append(plots)
         self._weatherVisualizerWidget = widgets.VBox(children=children)
         self.refreshTab()

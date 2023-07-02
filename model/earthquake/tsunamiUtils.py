@@ -1,3 +1,5 @@
+import sys
+sys.path.append('D:/google_hackathon/project/VoilaDisasterPredictor/model/earthquake')
 from const import getMeanStd
 tsunamiInputMean, tsunamiInputStd = getMeanStd()
 import os
