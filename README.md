@@ -6,6 +6,9 @@ This a voila App aimed at predicting natural disasters before they occur. In the
 * app - runs on the voila framework and utilizes the stored results from the model to predict the event 
 * tests - contains the unit tests 
 
+## Running the App
+Go to 'notebook' directory. Type 'voila' in the terminal. It will show you the notebook you want to run. Click on that, and you can see the App.
+
 ## App features
 ![1](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/49abecd4-18f9-402b-93c1-881dafbbf81b)
 ![2](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/33f1e4d8-7f37-44e0-b617-bd8ea6d2ba40)
