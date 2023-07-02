@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": [
+        "./model/earthquake",
+        "./model/earthquake",
+        "./model/earthquake"
+    ]
+}
