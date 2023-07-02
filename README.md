@@ -7,10 +7,12 @@ This a voila App aimed at predicting natural disasters before they occur. In the
 * tests - contains the unit tests 
 
 ## App features
+![1](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/49abecd4-18f9-402b-93c1-881dafbbf81b)
+![2](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/33f1e4d8-7f37-44e0-b617-bd8ea6d2ba40)
 
-![1](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/fa79f5f4-413e-40f2-84e5-e82ba5a5e8a0)![2](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/6354184a-50fd-415d-9b1a-e6027e51c6c9)![svm](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/e7fd30c6-850e-4218-9411-f2caac3d38![weather](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/0b79a7f4-4cee-4147-be10-f5b8a280c44e)
-a1)
+![svm](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/a6484d12-245c-4e3a-864a-e6fce4f12092)
 
+![weather](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/df830d24-2ad7-4e46-bc39-c3c4ca4c6626)
 
 
 Note: Due to time limitation, some of the paths in the code are absolute paths. Kindly change according to your local system
