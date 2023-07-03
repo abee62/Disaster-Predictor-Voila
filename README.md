@@ -2,7 +2,7 @@
 This a voila App aimed at predicting natural disasters before they occur. In the first version, this predicts the possibility of occurance of Tsunami in the event of an Earthquake.The app aslo contains real time weather  forecast data visualization, news related to natural disasters around the world. 
 
 ## Target users
-1. The common man - to browse through news, visualize weatther forecasts
+1. The common man - to browse through news, visualize weather forecasts
 2. Tsunami predicting centers who have access to earthquake details when it occurs. Or anyone with access to earthquake information.
 
 ## File Structure
