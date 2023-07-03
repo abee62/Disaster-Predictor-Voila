@@ -14,6 +14,11 @@ import requests
 import matplotlib.pyplot as plt
 from IPython.display import display
 import folium
+from IPython.display import display, HTML
+import openai
+import json
+
+
 
 sys.path.append('D:/google_hackathon/project/VoilaDisasterPredictor/model/earthquake')
 from tsunamiUtils import getTsunamiLinearRegressionResult
@@ -26,18 +31,24 @@ class DisasterPredictorApp(object):
         self._tsunamiPredictionInputWidget = widgets.Output()
         self._tsunamiPredictionOutputWidget = widgets.Output()
         self._tsunamiInfoWidget = widgets.Output()
+        self._newsArticlesWidget = widgets.Output()
+        self._weatherPlotWidgetResult = widgets.Output()
+        self._weatherPlotWidgetInput = widgets.Output()
+        self._chatBotWidget = widgets.Output()
+        self.weather_api_key = "c4fa56be9b07826adb1cd1b4b82e612b"
+        openai.api_key = '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'
 
     def getWidget(self):
         ''' This function returns the main widget of the app.
             The main tab consists of:
             1. tsunami Prediction 
             2. Weather Visualizer
-            3. Tsunami Predictor
-            4. Air Quality Predictor
+            3. News Articles
+            4. Chat Bot
         '''
         inputWidget = self.initInputWidget()
         resultWidget = self.initResultWidget()
-        titleWidget = widgets.HTML(value='<h1>Disaster Predictor</h1>')
+        titleWidget = widgets.HTML(value='<h1>Safety Net</h1>')
         mainWidget = widgets.VBox(
             children=[titleWidget, inputWidget, resultWidget])
         return mainWidget
@@ -60,21 +71,89 @@ class DisasterPredictorApp(object):
 
     def refreshTab(self):
         self._tsunamiPredictionWidget.children = [self._tsunamiPredictionInputWidget, self._tsunamiPredictionOutputWidget, self._tsunamiInfoWidget]
+        self._weatherVisualizerWidget.children = [self._weatherPlotWidgetInput, self._weatherPlotWidgetResult]
         self._resultTab.children = [
-            self._tsunamiPredictionWidget, self._weatherVisualizerWidget]
+            self._tsunamiPredictionWidget, self._weatherVisualizerWidget, self._newsArticlesWidget, self._chatBotWidget]
 
     def initResultWidget(self):
         self._resultTab = widgets.Tab()
         self._resultTab.children = [
-            self._tsunamiPredictionWidget, self._weatherVisualizerWidget]
+            self._tsunamiPredictionWidget, self._weatherVisualizerWidget, self._newsArticlesWidget, self._chatBotWidget]
         self._resultTab.set_title(0, 'Tsunami Prediction')
         self._resultTab.set_title(1, 'Weather Visualizer')
+        self._resultTab.set_title(2, 'News Articles')
+        self._resultTab.set_title(3, 'Chat Bot')
         try:
             self._weatherVisualizer()
             self._earthqaukePrediction()
+            self._newsArticles()
+            self._chatBot()
         except Exception as e:
             print(e)
         return self._resultTab
+
+    # Function to interact with the bot
+    def chat_with_bot(self, user_input):
+        response = openai.Completion.create(
+            engine='text-davinci-003',
+            prompt=user_input,
+            max_tokens=50,
+            temperature=0.7,
+            n=1,
+            stop=None
+        )
+        return response.choices[0].text.strip()
+
+    # Function to handle user input and update bot response
+    def handle_user_input(self):
+        user_input = self.user_input_widget.value
+        self.bot_response = self.chat_with_bot(user_input)
+        self.bot_response_widget.value = f'<p><b>Bot:</b> {self.bot_response}</p>'
+        self.user_input_widget.value = ''
+
+
+    def _chatBot(self):
+        # Create widgets for user input and bot response
+        self.user_input_widget = widgets.Text(placeholder='Enter your message...', layout=widgets.Layout(width='auto'))
+        self.bot_response_widget = widgets.HTML()
+        # Assign the handle_user_input function to the on_submit event of the user input widget
+        #self.user_input_widget.on_submit(lambda _: self.handle_user_input())
+        self.bot_response_widget.value = '<p><b>Bot:</b> Hello, I am a chatbot. I am here to help you with your queries related to natural disasters. Unfortunately I am out of service right now :(</p>'
+        # Display the widgets
+        self._chatBotWidget =  widgets.VBox([self.user_input_widget, self.bot_response_widget])
+        self.refreshTab()
+
+    def _newsArticles(self):
+        children = [widgets.HTML(value='<h2>News Articles</h2>')]
+        children.append(widgets.HTML('The following are the latest news articles related to natural disasters'))
+        api_key = 'ee2b669b82d149c1b14c716287554753'
+        url = 'https://newsapi.org/v2/everything'
+        params = {
+            'q': 'natural disaster',
+            'apiKey': api_key
+        }
+
+        response = requests.get(url, params=params)
+        data = response.json()
+
+        out = widgets.Output()
+        with out:
+            if response.status_code == 200:
+                articles = data['articles']
+                for i, article in enumerate(articles):
+                    title = article['title']
+                    url = article['url']
+                    image_url = article['urlToImage']
+                    if image_url:
+                        html_content = f"<div><img src='{image_url}' style='width:100px;height:100px;margin-right:10px;'><h3>{title}</h3></div><a href='{url}' target='_blank'>Read more</a>"
+                    else:
+                        html_content = f"<div><h3>{title}</h3></div><a href='{url}' target='_blank'>Read more</a>"
+                    display(HTML(html_content))
+            else:
+                out = widgets.HTML('Failed to fetch news articles')
+        children.append(out)
+        self._newsArticlesWidget = widgets.VBox(children=children)
+        self.refreshTab()
 
     def updatetsunamiResults(self, button = None):
         result, accuracy = getTsunamiLinearRegressionResult(self.modelName.value,
@@ -90,14 +169,9 @@ class DisasterPredictorApp(object):
 
         self.refreshTab()
 
-    def dummy(self, button = None):
-        
-        self._tsunamiPredictionOutputWidget = widgets.HTML('stuid shit')
-        self.refreshTab()
-
     def _earthqaukePrediction(self):
-        children = [widgets.HTML(value='<h2>tsunami Prediction</h2>')]
-
+        children = [widgets.HTML(value='<h2>Tsunami Prediction</h2>')]
+        children.append(widgets.HTML('If you want to know whether an earthquake will result in a Tsunami, please enter the following information:'))
         self.modelName = widgets.Dropdown(
             options=['Logistic Regression', 'SVM', 'Naive Bayes'],
             value='Logistic Regression',
@@ -128,15 +202,6 @@ class DisasterPredictorApp(object):
             disabled=False
         )
 
-        # maginitude = widgets.FloatText(
-        #     value=2.5,
-        #     min=0.0,
-        #     max=12.0,
-        #     step=0.1,
-        #     description='Magnitude of tsunami:',
-        #     style={'description_width': 'initial'},
-        #     disabled=False
-        # )
         tsunamiInputWidget = widgets.HBox([self.month, self.latitude, self.longitude])
         children.append(tsunamiInputWidget)
         self.cdi = widgets.FloatText(
@@ -224,16 +289,11 @@ class DisasterPredictorApp(object):
             disabled=False
 
         )
-        children.append(self.modelName)
-        children.append(self.cdi)
-        children.append(self.mmi)
-        children.append(self.alert)
-        children.append(self.sig)
-        children.append(self.nst)
-        children.append(self.dmin)
-        children.append(self.gap)
-        children.append(self.depth)
-        children.append(self.magType)
+        children.append(widgets.HBox([self.modelName, self.cdi]))
+        children.append(widgets.HBox([self.mmi, self.alert]))
+        children.append(widgets.HBox([self.sig, self.nst]))
+        children.append(widgets.HBox([self.dmin, self.gap]))
+        children.append(widgets.HBox([self.depth, self.magType]))
         children.append(self.net)
         #children.append(maginitude)
         self._tsunamiPredictionOutputWidget = widgets.HTML(
@@ -241,7 +301,6 @@ class DisasterPredictorApp(object):
         runButton = widgets.Button(description='Run')
         children.append(runButton)
         runButton.on_click(self.updatetsunamiResults)
-        #runButton.on_click(self.dummy)
         self._tsunamiPredictionInputWidget = widgets.VBox(children=children)
 
         m = folium.Map(location=[0, 200], zoom_start=2)
@@ -267,19 +326,18 @@ class DisasterPredictorApp(object):
             display(m)
         tsunamiDetails = widgets.HTML('<h3> Some details about Earthquakes and Tsunamis</h3>')
         #self._tsunamiInfoWidget = widgets.VBox(children=[tsunamiDetails, out])
-        self._tsunamiInfoWidget = out
+        earthquakeHistoricText = widgets.HTML('<h3> Earthquakes in the past</h3>')
+        self._tsunamiInfoWidget = widgets.VBox(children=[earthquakeHistoricText, out])
         self._tsunamiPredictionWidget = widgets.VBox(
             children=[self._tsunamiPredictionInputWidget, self._tsunamiPredictionOutputWidget, self._tsunamiInfoWidget])
         self.refreshTab()
 
-    
-
-    def plot_weather_forecast(self, api_key, location='London, UK'):
+    def plot_weather_forecast(self, button = None):
         # Make API call to retrieve weather data
         url = 'http://api.openweathermap.org/data/2.5/forecast'
         params = {
-            'q': location,
-            'appid': api_key,
+            'q': self.locations.value,
+            'appid': self.weather_api_key,
             'units': 'metric'
         }
         response = requests.get(url, params=params)
@@ -288,47 +346,67 @@ class DisasterPredictorApp(object):
         # Extract relevant information
         timestamps = []
         temperatures = []
+        humidities = []
+        # Add more lists for other weather factors like 'humidities', 'pressures', etc.
+
         for forecast in data['list']:
             timestamp = forecast['dt']
             temperature = forecast['main']['temp']
+            humidity = forecast['main']['humidity']
+            # Add more variables for other weather factors like 'pressure', 'wind_speed', etc.
+            
             timestamps.append(timestamp)
             temperatures.append(temperature)
+            humidities.append(humidity)
+            # Append other weather factors to their respective lists.
 
         # Convert timestamps to human-readable format
         dates = [datetime.datetime.fromtimestamp(timestamp) for timestamp in timestamps]
+        
+        # Create traces for different weather factors
+        temperature_trace = go.Scatter(x=dates, y=temperatures, name='Temperature (°C)')
+        humidity_trace = go.Scatter(x=dates, y=humidities, name='Humidity (%)')
+        # Add more traces for other weather factors.
 
-        # Create a DataFrame from the data
-        df = pd.DataFrame({'Date': dates, 'Temperature': temperatures})
+        # Create the figure layout
+        layout = go.Layout(
+            title='Weather Forecast',
+            xaxis=dict(title='Date'),
+            yaxis=dict(title='Value'),
+        )
 
-        # Set seaborn style
-        sns.set_style('darkgrid')
-        out = widgets.Output()
-        with out:
-            # Plot the data using seaborn
-            plt.figure(figsize=(10, 6))
-            sns.lineplot(data=df, x='Date', y='Temperature')
-            plt.xlabel('Date')
-            plt.ylabel('Temperature (°C)')
-            plt.title('Temperature Forecast')
+        # Add all the traces to the figure
+        data = [temperature_trace, humidity_trace]
+        # Add more traces to the 'data' list.
 
-            # Rotate x-axis labels for better readability
-            plt.xticks(rotation=45)
+        # Create the figure
+        fig = go.Figure(data=data, layout=layout)
 
-            # Display the plot
-            plt.show()
-        return out
-
+        # Display the figure
+        out = go.FigureWidget(fig)
+        children = []
+        children.append(widgets.HTML(self.locations.value))
+        children.append(out)
+        self._weatherPlotWidgetResult = widgets.VBox(children=children)
+        self.refreshTab()
 
     def _weatherVisualizer(self):
-        children = [widgets.HTML(value='<h2>Weather Visualizer</h2>')]
-        api_key = "c4fa56be9b07826adb1cd1b4b82e612b"
-        plots = self.plot_weather_forecast(api_key)
+        self.locations = widgets.Dropdown(
+            options=['London, UK', 'New York, United States', 'Delhi, India', 'Mumbai, India', 'Paris, France', 'Tokyo, Japan', 'Sydney, Australia'],
+            value='London, UK',
+            description='Location',
+            disabled=False
+        )
+        children = []
+        children.append(self.locations)
+        weatherPlotButton = widgets.Button(description='Weather Plot')
+        children.append(weatherPlotButton)
+        
+        weatherPlotButton.on_click(self.plot_weather_forecast)
+        self.plot_weather_forecast()
+        self._weatherPlotWidgetInput = widgets.VBox(children=children)
 
-        # # Displaying the plots using Voila
-        # for plot in plots:
-        #     display(widgets.Output(layout={'border': '1px solid black'}))
-        #     with plot.canvas:
-        #         display(plot)
-        children.append(plots)
-        self._weatherVisualizerWidget = widgets.VBox(children=children)
+        self._weatherVisualizerWidget = widgets.VBox(
+            children=[self._weatherPlotWidgetInput, self._weatherPlotWidgetResult])
+
         self.refreshTab()
