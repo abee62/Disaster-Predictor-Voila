@@ -35,12 +35,11 @@ https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/ee354e81-98e2
 
 
 ## App features
-![1](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/49abecd4-18f9-402b-93c1-881dafbbf81b)
-![2](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/33f1e4d8-7f37-44e0-b617-bd8ea6d2ba40)
+![4](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/4e36c4cd-77b7-4eeb-90ea-7dcc0f86c4bd)
+![5](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/b9614a50-4da2-4003-a9e5-401ed83df5b1)
+![6](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/9687aad6-77a8-4a12-8897-41906dcd90e8)
+![7](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/4cb5647c-2809-42c7-b24c-5eb403c3d231)
 
-![svm](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/a6484d12-245c-4e3a-864a-e6fce4f12092)
-
-![weather](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/df830d24-2ad7-4e46-bc39-c3c4ca4c6626)
 
 ## Further scope
 - We can recommend shelters, escape plan and helpline numbers based on the location where tsunami is triggered.
