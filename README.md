@@ -36,10 +36,11 @@ Press play to see the video
 
 
 ## App features
-![4](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/4e36c4cd-77b7-4eeb-90ea-7dcc0f86c4bd)
-![5](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/b9614a50-4da2-4003-a9e5-401ed83df5b1)
-![6](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/9687aad6-77a8-4a12-8897-41906dcd90e8)
-![7](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/4cb5647c-2809-42c7-b24c-5eb403c3d231)
+![4](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/64e57325-8960-4cde-9cef-f66bdb2d1d8a)
+![5](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/71b945b1-772e-48b4-a1aa-f3fc0bfcf720)
+![6](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/1ed0d418-8a9c-4107-a81b-790e35aef2e3)
+![7](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/1a73e8af-ca83-4ace-9c7f-d66a8e445b24)
+
 
 
 ## Further scope
