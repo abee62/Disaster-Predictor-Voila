@@ -30,7 +30,11 @@ Go to 'app' directory. Type 'voila' in the terminal. It will show you the notebo
 
 ## Demo
 
-[https://example.com/video.mp4](https://drive.google.com/file/d/115xplxifkFG-V30P6KZ36MdEcgMrfN2K/view?usp=sharing)
+[Demo](https://drive.google.com/file/d/115xplxifkFG-V30P6KZ36MdEcgMrfN2K/view?usp=sharing)
+
+
+https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/83714ade-ef21-471c-8b83-3c9160853f25
+
 
 Press play to see the video
 
