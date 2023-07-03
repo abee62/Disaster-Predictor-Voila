@@ -26,7 +26,7 @@ This a voila App aimed at predicting natural disasters before they occur. In the
 k-fold cross-validation technique is used to cross validate the Ensemble model. It gives a cross validation score of 82.32
 
 ## Running the App
-Go to 'notebook' directory. Type 'voila' in the terminal. It will show you the notebook you want to run. Click on that, and you can see the App.
+Go to 'app' directory. Type 'voila' in the terminal. It will show you the notebook you want to run. Click on that, and you can see the App.
 
 ## Demo
 
