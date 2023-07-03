@@ -1,3 +1,5 @@
+
+https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/4c2a08de-196e-4148-8a8f-ff74525655b1
 # Natural Disaster Predictor
 This a voila App aimed at predicting natural disasters before they occur. In the first version, this predicts the possibility of occurance of Tsunami in the event of an Earthquake.The app aslo contains real time weather  forecast data visualization, news related to natural disasters around the world. 
 
@@ -27,6 +29,12 @@ k-fold cross-validation technique is used to cross validate the Ensemble model. 
 
 ## Running the App
 Go to 'notebook' directory. Type 'voila' in the terminal. It will show you the notebook you want to run. Click on that, and you can see the App.
+
+## Demo
+
+https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/ee354e81-98e2-4983-9699-6dbc111689ab
+
+
 
 ## App features
 ![1](https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/49abecd4-18f9-402b-93c1-881dafbbf81b)
