@@ -1,6 +1,4 @@
-
-https://github.com/abee62/Disaster-Predictor-Voila/assets/62689173/4c2a08de-196e-4148-8a8f-ff74525655b1
-# Natural Disaster Predictor
+# Saftey Net - A Natural Disaster Guide
 This a voila App aimed at predicting natural disasters before they occur. In the first version, this predicts the possibility of occurance of Tsunami in the event of an Earthquake.The app aslo contains real time weather  forecast data visualization, news related to natural disasters around the world. 
 
 ## Target users
