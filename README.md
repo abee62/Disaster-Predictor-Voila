@@ -30,9 +30,9 @@ Go to 'app' directory. Type 'voila' in the terminal. It will show you the notebo
 
 ## Demo
 
-[<img src="[https://img.youtube.com/vi/<VIDEO_ID>/hqdefault.jpg](https://drive.google.com/file/d/115xplxifkFG-V30P6KZ36MdEcgMrfN2K/view?usp=sharing)" width="600" height="300"
-/>]([https://www.youtube.com/embed/<VIDEO_ID>](https://drive.google.com/file/d/115xplxifkFG-V30P6KZ36MdEcgMrfN2K/view?usp=sharing))
+[https://example.com/video.mp4](https://drive.google.com/file/d/115xplxifkFG-V30P6KZ36MdEcgMrfN2K/view?usp=sharing)
 
+Press play to see the video
 
 
 ## App features
